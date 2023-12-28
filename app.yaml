@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-app
+spec:
+  selector:
+    app: petclinic-app
+  ports:
+  - protocol: "TCP"
+    port: 8088
+    targetPort: 8088
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-app
+spec:
+  selector:
+    matchLabels:
+      app: petclinic-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: petclinic-app
+    spec:
+      hostNetwork: true
+      containers:
+      - name: petclinic-app
+        image: pachipulusu
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8088
